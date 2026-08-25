@@ -1,62 +1,72 @@
-# 📱 Nome do Projeto
+# 📱 Projeto: App de Serviços Gerais
 
-> Breve descrição do projeto em uma frase.
+> Aplicativo mobile que conecta clientes a prestadores de serviços gerais
+> (pintores, pedreiros, encanadores, eletricistas, jardineiros, montadores,
+> técnicos de ar-condicionado, diaristas, costureiras, entre outros),
+> funcionando como uma vitrine virtual para profissionais autônomos de áreas
+> com pouca visibilidade digital.
 
 ## 📌 Sobre o Projeto
 
-Este projeto consiste no desenvolvimento incremental de uma aplicação mobile para a disciplina de **Tecnologia de Construção de Software II**.
+Este projeto consiste no desenvolvimento incremental de uma aplicação mobile
+para a disciplina de **Tecnologia de Construção de Software II**.
 
-A aplicação será desenvolvida ao longo do semestre, incorporando progressivamente novas funcionalidades, melhorias de arquitetura, interface, persistência de dados, integração com APIs, testes, segurança e outros recursos pertinentes ao escopo definido.
+Profissionais autônomos de serviços gerais costumam ter pouca visibilidade
+digital e dependem principalmente de indicação boca a boca, enquanto clientes
+têm dificuldade em encontrar profissionais confiáveis de forma centralizada.
+O **App de Serviços Gerais** busca aproximar os dois lados: divulgação para
+quem presta o serviço e busca/avaliação para quem contrata.
 
-Todas as etapas serão realizadas sobre o mesmo projeto, permitindo sua evolução contínua durante a disciplina.
+A aplicação será desenvolvida ao longo do semestre, incorporando
+progressivamente novas funcionalidades, melhorias de arquitetura, interface,
+persistência de dados, integração com APIs, testes, segurança e outros
+recursos pertinentes ao escopo definido. Todas as etapas serão realizadas
+sobre o mesmo projeto, permitindo sua evolução contínua durante a disciplina.
 
-## 🎯 Problema
-
-Descreva aqui o problema que a aplicação pretende solucionar, incluindo:
-
-* Qual problema está sendo enfrentado;
-* Quem são os usuários da aplicação;
-* Quais são as principais dificuldades encontradas;
-* Como a solução proposta pretende resolver esse problema.
-
-## 💡 Solução Proposta
-
-Descreva brevemente como a aplicação pretende solucionar o problema apresentado.
-
-> Esta seção será aprimorada conforme o escopo e os requisitos do projeto forem definidos.
+📄 Proposta completa (público-alvo, telas, fluxo de navegação e decisões
+técnicas): [`docs/proposta.md`](docs/proposta.md)
 
 ## 🛠️ Tecnologias
 
 ### Aplicação Mobile
 
-* **Framework:** [React Native / Flutter / outro]
-* **Linguagem:** [JavaScript / TypeScript / Dart / outra]
+* **Framework:** React Native (Expo)
+* **Linguagem:** JavaScript
+* **Navegação:** React Navigation (Bottom Tabs + Stack Navigator)
+* **Armazenamento local:** AsyncStorage
 
 ### Backend
 
-* **Tecnologia:** [a definir]
-* **Banco de dados:** [a definir]
+* **Tecnologia:** a definir em etapa futura (backend próprio ou serviço
+  gerenciado, ex.: Firebase)
+* **Banco de dados:** a definir — nesta etapa os dados são simulados
+  localmente em JSON (`src/data/`)
 
 ### Ferramentas
 
-* Git
-* GitHub
-* [Outras ferramentas utilizadas]
+* Git / GitHub
+* Expo Go (execução em dispositivo físico durante o desenvolvimento)
 
-As tecnologias poderão ser alteradas ou complementadas ao longo do desenvolvimento, desde que as decisões sejam justificadas e documentadas.
+As tecnologias poderão ser alteradas ou complementadas ao longo do
+desenvolvimento, desde que as decisões sejam justificadas e documentadas.
 
 ## ✨ Funcionalidades
 
 ### Implementadas
 
-* [ ] Estrutura inicial da aplicação
-* [ ] Navegação entre telas
-* [ ] Interface inicial
+* [x] Estrutura inicial da aplicação
+* [x] Navegação entre telas (Login, Home, Busca, Perfil do Prestador, Perfil do Usuário)
+* [x] Interface inicial (esqueleto de telas, sem estilização final)
 
 ### Planejadas
 
-* [ ] Persistência local
-* [ ] Comunicação com API
+* [ ] Cadastro/login real (Cliente / Prestador)
+* [ ] Busca e filtro de prestadores por categoria e localização
+* [ ] Avaliações e portfólio no perfil do prestador
+* [ ] Favoritos persistidos (AsyncStorage)
+* [ ] Contato direto com o prestador (WhatsApp)
+* [ ] Persistência local (AsyncStorage/SQLite)
+* [ ] Comunicação com API (backend e/ou mapas)
 * [ ] Gerenciamento de estado
 * [ ] Recursos nativos do dispositivo
 * [ ] Autenticação e segurança
@@ -68,15 +78,18 @@ As tecnologias poderão ser alteradas ou complementadas ao longo do desenvolvime
 
 ## 🏗️ Arquitetura
 
-A arquitetura do projeto será definida e documentada conforme a aplicação evoluir.
+Nesta etapa, o projeto ainda não possui lógica de negócio implementada — o
+foco foi planejamento, definição de telas/navegação e estrutura inicial do
+repositório. A arquitetura detalhada (stack, decisões e próximos passos) é
+documentada e evoluída em [`docs/arquitetura.md`](docs/arquitetura.md).
 
 ## 🚀 Execução
 
 ### Pré-requisitos
 
-* [Requisito 1]
-* [Requisito 2]
-* [Requisito 3]
+* Node.js (versão LTS)
+* Aplicativo **Expo Go** instalado no celular (Android/iOS) — ou um emulador
+  Android/iOS configurado
 
 ### Instalação
 
@@ -85,44 +98,63 @@ A arquitetura do projeto será definida e documentada conforme a aplicação evo
 git clone <URL_DO_REPOSITORIO>
 
 # Entre no diretório
-cd <NOME_DO_PROJETO>
+cd AppServicosGerais
 
 # Instale as dependências
-[COMANDO_DE_INSTALAÇÃO]
+npm install
 ```
 
 ### Execução
 
 ```bash
-[COMANDO_PARA_EXECUTAR_O_PROJETO]
+npx expo start
 ```
 
-> As instruções serão atualizadas conforme a configuração definitiva do projeto.
+Em seguida, escaneie o QR code exibido no terminal com o app Expo Go
+(Android/iOS) ou pressione `a` (Android) / `i` (iOS) no terminal do Expo para
+abrir em um emulador.
 
-## 📂 Estrutura do Projeto
+> Nesta etapa (Etapa 01) o projeto contém a estrutura inicial e o esqueleto de
+> telas/navegação. A lógica funcional será implementada progressivamente nas
+> próximas etapas.
+
+## 📂 Sugestão de Estrutura do Projeto
 
 ```text
-NomeProjeto/
+AppServicosGerais/
 │
 ├── README.md
 │
 ├── docs/
-│   └── proposta.md
-│   └── etapas.md
+│   ├── proposta.md
+│   ├── arquitetura.md
+│   └── evidencias.md
 │
 ├── src/
+│   ├── App.js
+│   ├── navigation/
+│   ├── screens/
+│   ├── components/
+│   ├── data/
+│   └── services/
 │
 ├── tests/
-│
-└── ...
+├── assets/
+├── package.json
+└── app.json
 ```
 
-A estrutura segue a organização recomendada para o repositório do projeto na disciplina.
+A estrutura segue a organização recomendada para o repositório do projeto na
+disciplina.
 
 ## 📈 Desenvolvimento Incremental
 
-O projeto será desenvolvido de forma incremental. Cada etapa deverá evoluir a aplicação desenvolvida anteriormente, preservando as funcionalidades existentes sempre que possível.
-As versões das entregas serão identificadas por tags Git seguindo a convenção:
+O projeto será desenvolvido de forma incremental. Cada etapa deverá evoluir a
+aplicação desenvolvida anteriormente, preservando as funcionalidades
+existentes sempre que possível.
+
+As versões das entregas serão identificadas por tags Git seguindo a
+convenção:
 
 ```text
 etapa-01
@@ -135,13 +167,18 @@ final
 
 ## 📝 Documentação
 
-As principais decisões técnicas, alterações de escopo e informações relevantes para compreensão e manutenção do projeto serão documentadas ao longo do desenvolvimento.
-Documentos adicionais serão mantidos no diretório `docs/`.
-As etapas serão detalhadas no arquivo `docs/etapas.md`.
+As principais decisões técnicas, alterações de escopo e informações
+relevantes para compreensão e manutenção do projeto são documentadas ao longo
+do desenvolvimento, no diretório `docs/`:
+
+* [`docs/proposta.md`](docs/proposta.md) — proposta e planejamento (Etapa 01)
+* [`docs/arquitetura.md`](docs/arquitetura.md) — decisões técnicas e arquitetura
+* [`docs/evidencias.md`](docs/evidencias.md) — evidências de funcionamento por etapa
 
 ## ⚠️ Limitações Conhecidas
 
-* O projeto encontra-se em desenvolvimento.
-* Algumas funcionalidades ainda não foram implementadas.
+* Ainda não há backend: os dados exibidos são mockados localmente;
+* Autenticação ainda não é real (sem validação/segurança);
+* Telas atuais são esqueletos de navegação, sem estilização final;
+* Testes automatizados ainda não implementados;
 * A arquitetura e as tecnologias poderão sofrer ajustes durante as etapas.
-* As limitações serão atualizadas conforme o projeto evoluir.
