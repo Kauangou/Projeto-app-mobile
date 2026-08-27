@@ -84,52 +84,79 @@ Splash
 - Cada aba possui um **Stack Navigator** próprio para telas de detalhe (ex.:
   da Home ou da Busca é possível empilhar a tela de Perfil do Prestador).
 
-## 8. Tecnologia escolhida para o desenvolvimento mobile
+## 8. Tecnologias escolhidas para o desenvolvimento mobile
 
-**React Native (com Expo).**
+**React Native (com Expo) e TypeScript.**
 
 Justificativa:
 
 - Permite desenvolver para Android e iOS a partir de uma única base de código;
 - Grande comunidade, documentação abundante e curva de aprendizado adequada ao cronograma da disciplina;
-- Boa integração com bibliotecas de navegação (React Navigation) e armazenamento local (AsyncStorage / SQLite via
-  `expo-sqlite`);
+- O TypeScript adiciona tipagem estática, reduzindo erros no uso de dados de
+  perfis, avaliações, categorias e rotas, além de facilitar a manutenção do
+  código à medida que o projeto evolui;
+- Boa integração com bibliotecas de navegação (React Navigation),
+  armazenamento local e recursos nativos do dispositivo;
 - O uso do Expo facilita testar a aplicação em dispositivo físico via Expo Go durante o desenvolvimento incremental, sem
   necessidade de configurar ambiente nativo completo desde o início.
 
-## 9. Tecnologia escolhida para o backend (caso exista)
+## 9. Tecnologia escolhida para o backend
 
-**Ainda não definida.** Nesta primeira etapa, o projeto não utilizará backend próprio — os dados serão simulados
-localmente (ver item 11). A decisão entre backend próprio (ex.: Node.js + Express + PostgreSQL) ou um serviço gerenciado
-(ex.: Firebase) será tomada e justificada em etapa futura, quando forem implementados cadastro persistente multiusuário,
-autenticação real e sincronização de dados entre dispositivos.
+**Supabase**, uma plataforma de backend gerenciado.
+
+O Supabase será utilizado com **PostgreSQL** para armazenar usuários, perfis
+de prestadores, categorias, avaliações e favoritos; com **Supabase Auth** para
+cadastro e login por e-mail e senha; e com **Supabase Storage** para as fotos
+de portfólio.
+
+A escolha reduz a necessidade de configurar e manter um servidor próprio,
+permitindo concentrar o desenvolvimento nas funcionalidades do aplicativo. A
+segurança dos dados será complementada por políticas de **Row Level Security
+(RLS)**, garantindo que cada usuário possa alterar apenas os recursos sob sua
+responsabilidade, como seu próprio perfil, favoritos ou portfólio.
+
+Nesta primeira etapa, a integração ainda não foi implementada e os dados
+continuam simulados localmente (ver item 11).
 
 ## 10. Necessidade de comunicação com APIs externas
 
 Não é obrigatória nesta etapa. Futuramente está prevista a possível integração com:
 
-- uma **API de geolocalização/mapas** (ex.: Google Maps ou OpenStreetMap)
-  para localizar prestadores próximos ao cliente;
+- os recursos nativos `expo-location` e `react-native-maps` para obter a
+  localização do cliente e exibir prestadores próximos;
 - um **link direto para o WhatsApp** (`wa.me`) como canal de contato entre cliente e prestador.
+
+Para o envio de fotos ao portfólio, será utilizado o `expo-image-picker`, que
+permite selecionar imagens da galeria ou da câmera do dispositivo. A abertura
+do WhatsApp será feita com `expo-linking`.
 
 Essas integrações serão avaliadas e implementadas conforme a pertinência nas etapas seguintes, de acordo com o item 1
 das regras da disciplina.
 
 ## 11. Forma prevista de armazenamento de dados
 
-Nesta etapa, os dados (categorias de serviço, prestadores de exemplo, favoritos) são simulados por meio de um arquivo
-JSON local (`src/data/mockProviders.json`) e persistidos no dispositivo usando **AsyncStorage** (ex.: para salvar
-favoritos e o perfil do usuário logado). A persistência em servidor/nuvem será avaliada e implementada em etapas
-futuras, conforme a definição do backend (item 9).
+Nesta etapa, os dados (categorias de serviço, prestadores de exemplo e
+favoritos) são simulados por meio de arquivos JSON locais em `src/data/`.
+
+Com a integração do backend, o Supabase será a fonte principal dos dados. No
+dispositivo, o **AsyncStorage** será usado para preferências e cache simples;
+o **Expo SecureStore** será reservado a dados sensíveis de pequeno porte. O
+TanStack Query administrará as consultas ao backend, os estados de
+carregamento/erro e a atualização do cache.
 
 ## 12. Principais decisões técnicas (resumo)
 
 | Decisão                                | Justificativa                                                                                          |
 |----------------------------------------|--------------------------------------------------------------------------------------------------------|
-| React Native + Expo                    | Multiplataforma, produtividade e facilidade de testes durante o semestre.                              |
+| React Native + Expo + TypeScript       | Multiplataforma, produtividade, tipagem estática e facilidade de testes durante o semestre.            |
 | React Navigation (Bottom Tabs + Stack) | Padrão de mercado para apps com múltiplas seções e telas de detalhe.                                   |
-| Sem backend nesta etapa                | Foco inicial em fluxo de telas, navegação e estrutura do projeto; dados mockados localmente.           |
-| AsyncStorage para persistência local   | Simples, nativo do ecossistema React Native, suficiente para favoritos e sessão do usuário nesta fase. |
+| Supabase (PostgreSQL, Auth e Storage)  | Centraliza banco de dados, autenticação e fotos de portfólio sem manter servidor próprio.               |
+| RLS no Supabase                        | Restringe o acesso de cada usuário aos dados que lhe pertencem.                                        |
+| Context API + TanStack Query           | Separa o estado global simples do controle de dados remotos e cache.                                   |
+| React Hook Form + Zod                  | Simplifica formulários e valida os dados antes do envio ao backend.                                    |
+| AsyncStorage + Expo SecureStore        | Armazena preferências/cache e dados sensíveis de pequeno porte conforme a necessidade.                 |
+| Expo Image Picker / Location / Linking | Integra galeria/câmera, localização e contato externo via WhatsApp.                                    |
+| Jest + React Native Testing Library    | Permite testar componentes, fluxos e regras principais.                                                 |
 
 *Decisões técnicas adicionais serão registradas em `docs/arquitetura.md` conforme o projeto evoluir.*
 

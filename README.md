@@ -31,21 +31,29 @@ técnicas): [`docs/proposta.md`](docs/proposta.md)
 ### Aplicação Mobile
 
 * **Framework:** React Native (Expo)
-* **Linguagem:** JavaScript
+* **Linguagem:** TypeScript
 * **Navegação:** React Navigation (Bottom Tabs + Stack Navigator)
-* **Armazenamento local:** AsyncStorage
+* **Formulários e validação:** React Hook Form + Zod
+* **Estado:** Context API (sessão) + TanStack Query (dados remotos e cache)
+* **Armazenamento local:** AsyncStorage (preferências e cache) + Expo SecureStore
+  (dados sensíveis de pequeno porte)
 
-### Backend
+### Backend e dados
 
-* **Tecnologia:** a definir em etapa futura (backend próprio ou serviço
-  gerenciado, ex.: Firebase)
-* **Banco de dados:** a definir — nesta etapa os dados são simulados
-  localmente em JSON (`src/data/`)
+* **Plataforma:** Supabase
+* **Banco de dados:** PostgreSQL
+* **Autenticação:** Supabase Auth (e-mail e senha)
+* **Armazenamento de imagens:** Supabase Storage (portfólios)
+* **Segurança:** Row Level Security (RLS) para controle de acesso aos dados
+* **Dados desta etapa:** simulados localmente em JSON (`src/data/`)
 
 ### Ferramentas
 
 * Git / GitHub
 * Expo Go (execução em dispositivo físico durante o desenvolvimento)
+* Jest + React Native Testing Library
+* ESLint + Prettier
+* EAS Build (preparação de builds nas etapas finais)
 
 As tecnologias poderão ser alteradas ou complementadas ao longo do
 desenvolvimento, desde que as decisões sejam justificadas e documentadas.
@@ -65,10 +73,10 @@ desenvolvimento, desde que as decisões sejam justificadas e documentadas.
 * [ ] Avaliações e portfólio no perfil do prestador
 * [ ] Favoritos persistidos (AsyncStorage)
 * [ ] Contato direto com o prestador (WhatsApp)
-* [ ] Persistência local (AsyncStorage/SQLite)
-* [ ] Comunicação com API (backend e/ou mapas)
-* [ ] Gerenciamento de estado
-* [ ] Recursos nativos do dispositivo
+* [ ] Persistência local (AsyncStorage / SecureStore)
+* [ ] Comunicação com API (Supabase e/ou mapas)
+* [ ] Gerenciamento de estado e cache de dados remotos
+* [ ] Recursos nativos do dispositivo (galeria, localização e links externos)
 * [ ] Autenticação e segurança
 * [ ] Testes automatizados
 * [ ] Melhorias de desempenho
@@ -131,12 +139,15 @@ AppServicosGerais/
 │   └── evidencias.md
 │
 ├── src/
-│   ├── App.js
+│   ├── App.tsx
 │   ├── navigation/
 │   ├── screens/
 │   ├── components/
 │   ├── data/
-│   └── services/
+│   ├── services/
+│   ├── contexts/
+│   ├── hooks/
+│   └── types/
 │
 ├── tests/
 ├── assets/
@@ -177,7 +188,8 @@ do desenvolvimento, no diretório `docs/`:
 
 ## ⚠️ Limitações Conhecidas
 
-* Ainda não há backend: os dados exibidos são mockados localmente;
+* O backend Supabase está definido, mas ainda não foi integrado: os dados
+  exibidos são mockados localmente;
 * Autenticação ainda não é real (sem validação/segurança);
 * Telas atuais são esqueletos de navegação, sem estilização final;
 * Testes automatizados ainda não implementados;
