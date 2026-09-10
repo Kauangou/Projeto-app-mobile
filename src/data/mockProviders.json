@@ -1,0 +1,261 @@
+[
+  {
+    "id": "1",
+    "name": "Carlos Silva",
+    "categoryId": "pintor",
+    "city": "Goiânia",
+    "state": "GO",
+    "description": "Pintor residencial e comercial com 12 anos de experiência. Trabalho com tinta acrílica, textura e grafiato.",
+    "priceReference": "A partir de R$ 35/m²",
+    "rating": 4.8,
+    "reviewsCount": 3,
+    "phone": "5531999990001",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Marina Costa",
+        "rating": 5,
+        "comment": "Serviço excelente, muito caprichoso!",
+        "date": "2026-06-12"
+      },
+      {
+        "id": "r2",
+        "authorName": "João Pedro",
+        "rating": 5,
+        "comment": "Pontual e organizado.",
+        "date": "2026-05-02"
+      },
+      {
+        "id": "r3",
+        "authorName": "Fernanda Lima",
+        "rating": 4.5,
+        "comment": "Ótimo acabamento, recomendo.",
+        "date": "2026-03-20"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Roberto Almeida",
+    "categoryId": "pedreiro",
+    "city": "Goiânia",
+    "state": "GO",
+    "description": "Pedreiro especializado em reformas, alvenaria e revestimentos. Orçamento sem compromisso.",
+    "priceReference": "Sob orçamento",
+    "rating": 4.6,
+    "reviewsCount": 2,
+    "phone": "5531999990002",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Ana Paula",
+        "rating": 4.5,
+        "comment": "Trabalho bem feito, dentro do prazo.",
+        "date": "2026-04-18"
+      },
+      {
+        "id": "r2",
+        "authorName": "Tiago Souza",
+        "rating": 4.5,
+        "comment": "Preço justo.",
+        "date": "2026-02-10"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Marcos Vinícius",
+    "categoryId": "encanador",
+    "city": "Contagem",
+    "state": "MG",
+    "description": "Encanador 24h para emergências, instalação e manutenção hidráulica residencial.",
+    "priceReference": "Visita a partir de R$ 60",
+    "rating": 4.9,
+    "reviewsCount": 4,
+    "phone": "5531999990003",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Patrícia Nunes",
+        "rating": 5,
+        "comment": "Resolveu o vazamento rapidinho!",
+        "date": "2026-07-01"
+      },
+      {
+        "id": "r2",
+        "authorName": "Lucas Martins",
+        "rating": 5,
+        "comment": "Muito atencioso e honesto.",
+        "date": "2026-06-15"
+      },
+      {
+        "id": "r3",
+        "authorName": "Beatriz Dias",
+        "rating": 4.5,
+        "comment": "Recomendo.",
+        "date": "2026-05-30"
+      },
+      {
+        "id": "r4",
+        "authorName": "Rafael Torres",
+        "rating": 5,
+        "comment": "Voltarei a chamar.",
+        "date": "2026-04-22"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "André Ferreira",
+    "categoryId": "eletricista",
+    "city": "Goiânia",
+    "state": "GO",
+    "description": "Eletricista predial e residencial, instalação de quadros, tomadas e iluminação.",
+    "priceReference": "A partir de R$ 80",
+    "rating": 4.5,
+    "reviewsCount": 2,
+    "phone": "5531999990004",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Camila Rocha",
+        "rating": 5,
+        "comment": "Serviço rápido e seguro.",
+        "date": "2026-06-05"
+      },
+      {
+        "id": "r2",
+        "authorName": "Diego Pires",
+        "rating": 4,
+        "comment": "Muito profissional.",
+        "date": "2026-03-11"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Juliana Prado",
+    "categoryId": "jardineiro",
+    "city": "Trindade",
+    "state": "GO",
+    "description": "Manutenção de jardins, poda, paisagismo e irrigação para residências e condomínios.",
+    "priceReference": "A partir de R$ 120/visita",
+    "rating": 4.9,
+    "reviewsCount": 3,
+    "phone": "5531999990005",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Renata Souza",
+        "rating": 5,
+        "comment": "Jardim ficou lindo!",
+        "date": "2026-07-10"
+      },
+      {
+        "id": "r2",
+        "authorName": "Paulo Henrique",
+        "rating": 5,
+        "comment": "Muito cuidadosa com as plantas.",
+        "date": "2026-06-02"
+      },
+      {
+        "id": "r3",
+        "authorName": "Isabela Martins",
+        "rating": 4.5,
+        "comment": "Recomendo bastante.",
+        "date": "2026-04-28"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "Fernando Costa",
+    "categoryId": "montador",
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "description": "Montagem e desmontagem de móveis planejados e de loja (guarda-roupas, cozinhas, estantes).",
+    "priceReference": "A partir de R$ 90",
+    "rating": 3,
+    "reviewsCount": 2,
+    "phone": "5531999990006",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Sabrina Alves",
+        "rating": 3,
+        "comment": "Montou tudo rapidinho.",
+        "date": "2026-05-19"
+      },
+      {
+        "id": "r2",
+        "authorName": "Eduardo Lima",
+        "rating": 3,
+        "comment": "Bom serviço.",
+        "date": "2026-03-02"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "Patrícia Gomes",
+    "categoryId": "diarista",
+    "city": "Goiânia",
+    "state": "GO",
+    "description": "Diarista com experiência em limpeza residencial completa e organização.",
+    "priceReference": "A partir de R$ 150/diária",
+    "rating": 5,
+    "reviewsCount": 3,
+    "phone": "5531999990007",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Larissa Martins",
+        "rating": 5,
+        "comment": "Impecável, super confiável.",
+        "date": "2026-07-15"
+      },
+      {
+        "id": "r2",
+        "authorName": "Bruno Cardoso",
+        "rating": 5,
+        "comment": "Casa ficou brilhando.",
+        "date": "2026-06-20"
+      },
+      {
+        "id": "r3",
+        "authorName": "Vanessa Ribeiro",
+        "rating": 5,
+        "comment": "Pontual e cuidadosa.",
+        "date": "2026-05-08"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Sônia Regina",
+    "categoryId": "costureira",
+    "city": "Anápolis",
+    "state": "GO",
+    "description": "Costureira para ajustes, reparos e confecção de roupas sob medida.",
+    "priceReference": "A partir de R$ 25/peça",
+    "rating": 4.7,
+    "reviewsCount": 2,
+    "phone": "5531999990008",
+    "reviews": [
+      {
+        "id": "r1",
+        "authorName": "Helena Martins",
+        "rating": 5,
+        "comment": "Ajuste perfeito, adorei!",
+        "date": "2026-06-25"
+      },
+      {
+        "id": "r2",
+        "authorName": "Gustavo Pinto",
+        "rating": 4.5,
+        "comment": "Muito caprichosa.",
+        "date": "2026-04-14"
+      }
+    ]
+  }
+]

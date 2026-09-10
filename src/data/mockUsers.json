@@ -1,0 +1,8 @@
+[
+  {
+    "name": "usuario_teste",
+    "email": "teste@email.com",
+    "password": "Teste@123",
+    "profileType": "cliente"
+  }
+]

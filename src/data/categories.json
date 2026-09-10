@@ -1,0 +1,11 @@
+[
+  { "id": "pintor", "name": "Pintor", "icon": "🎨" },
+  { "id": "pedreiro", "name": "Pedreiro", "icon": "🧱" },
+  { "id": "encanador", "name": "Encanador", "icon": "🔧" },
+  { "id": "eletricista", "name": "Eletricista", "icon": "💡" },
+  { "id": "jardineiro", "name": "Jardineiro", "icon": "🌿" },
+  { "id": "montador", "name": "Montador de móveis", "icon": "🪑" },
+  { "id": "ar-condicionado", "name": "Técnico de ar-condicionado", "icon": "❄️" },
+  { "id": "diarista", "name": "Diarista", "icon": "🧹" },
+  { "id": "costureira", "name": "Costureira", "icon": "🧵" }
+]
