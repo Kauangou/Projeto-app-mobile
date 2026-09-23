@@ -103,6 +103,24 @@ de layout e decisões de interface) em [`docs/etapa-02.md`](docs/etapa-02.md).
       avaliações e preferências
 - [x] Ícones Ionicons (`@expo/vector-icons`) nas abas e na interface
 
+### Implementadas (Etapa 03 — navegação, UX e acessibilidade)
+
+- [x] Auditoria e correção de **contraste de cor** (WCAG AA, ≥4.5:1): botão
+      "Chamar no WhatsApp" e destaques em âmbar (preço, variante `secondary`
+      do `Button`) reprovavam e foram ajustados
+- [x] **Alvos de toque ≥44×44px** em chips de filtro, segmento do formulário
+      de vitrine e links de navegação secundária (antes menores)
+- [x] **Cabeçalhos de tela** marcados com `accessibilityRole="header"` para
+      navegação por leitor de tela (VoiceOver/TalkBack)
+- [x] **Feedback visual não-bloqueante** (toast) para ações de salvar/avaliar
+      que antes eram silenciosas, com anúncio automático para leitor de tela
+- [x] Links de navegação secundária (Esqueci a senha, Criar conta, Sair e
+      continuar depois etc.) marcados como botão para leitor de tela
+
+Detalhes completos desta etapa (estrutura de navegação, telas e mecanismos de
+acesso, feedback visual, decisões de UX e medidas de acessibilidade) em
+[`docs/etapa-03.md`](docs/etapa-03.md).
+
 ### Planejadas
 
 - [ ] Cadastro/login real com Supabase Auth
@@ -286,14 +304,21 @@ desenvolvimento, no diretório `docs/`:
   etapa
 - [`docs/etapa-02.md`](docs/etapa-02.md) — detalhamento do protótipo de
   interface (Etapa 02)
+- [`docs/etapa-03.md`](docs/etapa-03.md) — navegação, UX e acessibilidade
+  (Etapa 03)
 
 ## ⚠️ Limitações Conhecidas
 
 - O backend Supabase está definido, mas ainda não foi integrado: os dados
   exibidos são mockados localmente em (`src/data/`);
-- Login/cadastro ainda não são reais (sem validação de credenciais no servidor
-  nem persistência, a sessão existe apenas em memória, via Context API, e é
-  perdida ao fechar o app);
-- Favoritos existem apenas durante a sessão (não são persistidos);
+- Login/cadastro validam apenas localmente (contas e sessão salvas no
+  AsyncStorage do aparelho, sem validação em servidor nem sincronização entre
+  dispositivos);
+- Contato por WhatsApp/ligação é ilustrativo (exibe o número, não abre o
+  app de fato);
 - Testes automatizados ainda não implementados;
+- Acessibilidade com leitor de tela (VoiceOver/TalkBack) foi verificada via
+  árvore de acessibilidade no preview web, não com o leitor de tela ligado
+  num aparelho/simulador — ver limitação detalhada em
+  [`docs/etapa-03.md`](docs/etapa-03.md#6-medidas-de-acessibilidade-implementadas);
 - A arquitetura e as tecnologias poderão sofrer ajustes durante as etapas.

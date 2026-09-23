@@ -56,7 +56,9 @@ export function LoginScreen({ navigation, route }: Props) {
     <ScreenContainer scroll>
       <View style={styles.header}>
         <Icon name="construct" size={48} color={colors.primary} style={styles.logo} />
-        <Text style={styles.title}>App Serviços Gerais</Text>
+        <Text style={styles.title} accessibilityRole="header">
+          App Serviços Gerais
+        </Text>
         <Text style={styles.subtitle}>Conecte-se a quem faz.</Text>
       </View>
 
@@ -110,6 +112,9 @@ export function LoginScreen({ navigation, route }: Props) {
 
       <Pressable
         style={styles.forgotPassword}
+        hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel="Esqueci minha senha"
         onPress={() =>
           showMessage(
             'Recuperar senha',
@@ -122,7 +127,13 @@ export function LoginScreen({ navigation, route }: Props) {
 
       <Button label="Entrar" onPress={handleLogin} loading={submitting} style={styles.submitButton} />
 
-      <Pressable style={styles.createAccount} onPress={() => navigation.navigate('Register')}>
+      <Pressable
+        style={styles.createAccount}
+        hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel="Não tem conta? Criar conta"
+        onPress={() => navigation.navigate('Register')}
+      >
         <Text style={styles.createAccountText}>
           Não tem conta? <Text style={styles.createAccountLink}>Criar conta</Text>
         </Text>
@@ -165,7 +176,8 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     alignSelf: 'flex-end',
-    marginBottom: spacing.lg,
+    paddingVertical: spacing.xs,
+    marginBottom: spacing.sm,
   },
   forgotPasswordText: {
     color: colors.primary,
@@ -177,7 +189,8 @@ const styles = StyleSheet.create({
   },
   createAccount: {
     alignItems: 'center',
-    marginTop: spacing.lg,
+    paddingVertical: spacing.xs,
+    marginTop: spacing.md,
   },
   createAccountText: {
     color: colors.textMuted,

@@ -22,7 +22,9 @@ export function FavoritesScreen({ navigation }: Props) {
 
   return (
     <ScreenContainer>
-      <Text style={styles.title}>Favoritos</Text>
+      <Text style={styles.title} accessibilityRole="header">
+        Favoritos
+      </Text>
 
       <FlatList
         data={favoriteProviders}

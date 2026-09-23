@@ -74,8 +74,8 @@ export function SearchScreen({ navigation, route }: Props) {
   )?.value;
 
   const results = useMemo(
-    () => (applied ? sortProviders(filterProviders(providers, applied, categories), sort) : null),
-    [applied, providers, categories, sort],
+    () => (applied ? sortProviders(filterProviders(providers, applied), sort) : null),
+    [applied, providers, sort],
   );
 
   const updateDraft = (changes: Partial<SearchFilters>) =>
@@ -109,8 +109,8 @@ export function SearchScreen({ navigation, route }: Props) {
   const filtersPanel = (
     <View style={styles.panel}>
       <TextField
-        label="Nome do prestador ou serviço"
-        placeholder="Ex.: Carlos, pintura..."
+        label="Nome do prestador"
+        placeholder="Ex.: Carlos"
         value={draft.name}
         onChangeText={(name) => updateDraft({ name })}
         returnKeyType="search"

@@ -46,7 +46,7 @@ export function HomeScreen({ navigation }: Props) {
         accessibilityLabel="Buscar prestadores"
       >
         <Icon name="search" size={20} color={colors.textMuted} />
-        <Text style={styles.searchShortcutText}>Buscar por nome, serviço ou cidade</Text>
+        <Text style={styles.searchShortcutText}>Buscar por nome ou cidade</Text>
       </Pressable>
 
       <SectionTitle title="Categorias" />

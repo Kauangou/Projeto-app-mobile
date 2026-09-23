@@ -1,4 +1,4 @@
-import { Provider, ServiceCategory } from '../types';
+import { Provider } from '../types';
 import { normalizeText } from './text';
 
 export interface SearchFilters {
@@ -21,22 +21,14 @@ export function hasActiveFilters(filters: SearchFilters) {
   );
 }
 
-export function filterProviders(
-  providers: Provider[],
-  filters: SearchFilters,
-  categories: ServiceCategory[] = [],
-) {
+export function filterProviders(providers: Provider[], filters: SearchFilters) {
   const name = normalizeText(filters.name);
   const location = normalizeText(filters.location);
 
   return providers.filter((provider) => {
     if (filters.categoryId && provider.categoryId !== filters.categoryId) return false;
     if (provider.rating < filters.minRating) return false;
-    if (name) {
-      const categoryName = categories.find((c) => c.id === provider.categoryId)?.name ?? '';
-      const haystack = normalizeText(`${provider.name} ${categoryName}`);
-      if (!haystack.includes(name)) return false;
-    }
+    if (name && !normalizeText(provider.name).includes(name)) return false;
     if (location) {
       const place = normalizeText(`${provider.city} ${provider.state} ${provider.city}/${provider.state}`);
       if (!place.includes(location)) return false;

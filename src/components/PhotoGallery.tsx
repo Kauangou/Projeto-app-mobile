@@ -38,7 +38,7 @@ export function PhotoGallery({ photos, size = 120, onRemove, onAdd, addLabel = '
             {onRemove && (
               <Pressable
                 onPress={() => onRemove(photo)}
-                hitSlop={8}
+                hitSlop={10}
                 style={styles.removeButton}
                 accessibilityRole="button"
                 accessibilityLabel={`Remover foto ${index + 1}`}

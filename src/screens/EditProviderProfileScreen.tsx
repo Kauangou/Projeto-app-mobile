@@ -8,12 +8,14 @@ import { SectionTitle } from '../components/SectionTitle';
 import { colors, spacing, typography } from '../theme';
 import { useMyProvider } from '../hooks/useProviders';
 import { useProvidersContext } from '../contexts/ProvidersContext';
+import { useToast } from '../contexts/ToastContext';
 import { pickImageFromLibrary } from '../utils/imagePicker';
 
 export function EditProviderProfileScreen() {
   const navigation = useNavigation();
   const provider = useMyProvider();
   const { updateProvider, addPortfolioPhoto, removePortfolioPhoto } = useProvidersContext();
+  const { showToast } = useToast();
 
   if (!provider) {
     return <EmptyState icon="alert-circle-outline" title="Vitrine não encontrada" />;
@@ -46,6 +48,7 @@ export function EditProviderProfileScreen() {
         onSubmit={(values) => {
           updateProvider(provider.id, values);
           navigation.goBack();
+          showToast('Vitrine atualizada');
         }}
       />
     </ScreenContainer>

@@ -109,3 +109,57 @@ são registradas uma vez e reaproveitadas em todas as abas.
 - Integrar persistência remota e upload de imagens (Supabase Storage);
 - Introduzir TanStack Query para cache de dados remotos;
 - Implementar testes automatizados (`tests/`).
+
+## Etapa 03 — Navegação, UX e acessibilidade
+
+A navegação (stack raiz + abas por perfil + stack por aba) já estava
+estruturalmente completa desde as melhorias pós-Etapa 02; esta etapa foi de
+auditoria e reforço de UX/acessibilidade sobre essa base. Detalhamento
+completo em [`docs/etapa-03.md`](etapa-03.md); aqui ficam só as decisões
+técnicas novas.
+
+### Novo componente: feedback não-bloqueante (toast)
+
+- `src/contexts/ToastContext.tsx` + `src/components/Toast.tsx`: contexto
+  simples (`useToast().showToast(mensagem)`) que sobrepõe uma mensagem no
+  topo da tela por ~2,5s, sem bloquear a interação.
+- Montado uma única vez em `App.tsx`, acima do `AppNavigator`, para
+  sobreviver a `navigation.goBack()` disparado logo depois de chamá-lo.
+- **Sem biblioteca de animação**: uma primeira versão usava `Animated` com
+  `useNativeDriver`, mas a transição de opacidade não progredia em ambiente
+  de preview web automatizado (suspeita: `requestAnimationFrame`
+  "congelado" em aba não focada — o aviso de fallback para animação via JS
+  aparece no console mesmo assim). Como o toast é só um reforço visual
+  (a mensagem já é garantida por `AccessibilityInfo.announceForAccessibility`
+  para quem usa leitor de tela), optou-se por simplificar para
+  aparecer/sumir direto, sem animação, priorizando confiabilidade sobre
+  polish visual.
+- Usado hoje em três ações que antes eram silenciosas (só
+  `navigation.goBack()`, sem nenhuma confirmação): salvar conta, salvar
+  vitrine, publicar avaliação. Favoritar não usa toast — o ícone já muda de
+  estado na hora, um toast a cada toque seria redundante.
+
+### Ajustes no tema (`src/theme/index.ts`)
+
+Duas cores foram escurecidas após auditoria de contraste (fórmula de
+contraste do WCAG 2.1, calculada programaticamente, não "a olho"):
+
+| Cor | Antes | Depois | Contraste com texto branco |
+|-----|-------|--------|------------------------------|
+| `whatsapp` | `#25D366` | `#0E7A3D` | 1.98:1 → 5.43:1 |
+| `secondary` | `#F59E0B` | `#B45309` | 2.15:1 → 5.02:1 |
+
+Único token de cor alterado; nenhum componente precisou mudar de estrutura
+porque tudo já lia a cor do tema centralizado.
+
+### Auditoria de acessibilidade
+
+Feita por leitura de código (grep por `accessibilityRole`/`hitSlop`/padding)
+e verificação na árvore de acessibilidade exposta pelo React Native Web
+(mapeia `accessibilityRole`/`Label`/`State` para papéis ARIA), via o preview
+`expo-web` já configurado em `.claude/launch.json`. **Não** foi feita uma
+passada manual com VoiceOver/TalkBack ligado: o projeto é Expo gerenciado
+(sem pasta `ios/`/`android/`), e gerar um build de desenvolvimento
+(`expo run:ios`/`run:android`) só para essa validação ficou fora do escopo
+desta etapa. Ver a limitação registrada em
+[`docs/etapa-03.md`](etapa-03.md#6-medidas-de-acessibilidade-implementadas).

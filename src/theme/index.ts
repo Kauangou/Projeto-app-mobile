@@ -4,7 +4,9 @@ export const colors = {
   primarySoft: '#DBEAFE',
   onPrimary: '#FFFFFF',
   onPrimaryMuted: '#E0E7FF',
-  secondary: '#F59E0B',
+  // Amber-700: versão escurecida do amber padrão (#F59E0B), que reprovava contraste
+  // (2.15:1) como texto/botão sobre fundo claro. Com branco por cima, fica em 5.02:1 (AA).
+  secondary: '#B45309',
   background: '#F8FAFC',
   surface: '#FFFFFF',
   text: '#0F172A',
@@ -12,7 +14,9 @@ export const colors = {
   border: '#E2E8F0',
   success: '#16A34A',
   successSoft: '#DCFCE7',
-  whatsapp: '#25D366',
+  // Verde do WhatsApp escurecido: o tom oficial (#25D366) some com texto branco em cima
+  // (1.98:1). Este tom mantém a identidade "verde WhatsApp" e passa em 5.43:1 (AA).
+  whatsapp: '#0E7A3D',
   danger: '#DC2626',
   star: '#F59E0B',
   overlay: 'rgba(15, 23, 42, 0.92)',

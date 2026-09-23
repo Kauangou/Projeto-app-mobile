@@ -8,6 +8,7 @@ import { TextField } from '../components/TextField';
 import { Button } from '../components/Button';
 import { colors, radius, spacing, typography } from '../theme';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 import { ProfileStackParamList } from '../navigation/types';
 
 const accountSchema = z.object({
@@ -20,6 +21,7 @@ type Props = NativeStackScreenProps<ProfileStackParamList, 'EditAccount'>;
 
 export function EditAccountScreen({ navigation }: Props) {
   const { user, updateUser } = useAuth();
+  const { showToast } = useToast();
 
   const form = useForm<AccountForm>({
     resolver: zodResolver(accountSchema),
@@ -29,6 +31,7 @@ export function EditAccountScreen({ navigation }: Props) {
   const handleSave = form.handleSubmit(({ name }) => {
     updateUser({ name: name.trim() });
     navigation.goBack();
+    showToast('Conta atualizada');
   });
 
   return (

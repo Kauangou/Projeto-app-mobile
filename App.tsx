@@ -5,20 +5,23 @@ import { AuthProvider } from './src/contexts/AuthContext';
 import { ProvidersProvider } from './src/contexts/ProvidersContext';
 import { FavoritesProvider } from './src/contexts/FavoritesContext';
 import { SettingsProvider } from './src/contexts/SettingsContext';
+import { ToastProvider } from './src/contexts/ToastContext';
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <ProvidersProvider>
-          <FavoritesProvider>
-            <SettingsProvider>
-              <AppNavigator />
-              <StatusBar style="dark" />
-            </SettingsProvider>
-          </FavoritesProvider>
-        </ProvidersProvider>
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <ProvidersProvider>
+            <FavoritesProvider>
+              <SettingsProvider>
+                <AppNavigator />
+                <StatusBar style="dark" />
+              </SettingsProvider>
+            </FavoritesProvider>
+          </ProvidersProvider>
+        </AuthProvider>
+      </ToastProvider>
     </SafeAreaProvider>
   );
 }

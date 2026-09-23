@@ -88,7 +88,9 @@ function Dashboard({ navigation, provider }: Props & { provider: Provider }) {
           provider.reviews.length > LATEST_REVIEWS ? (
             <Pressable
               onPress={() => navigation.navigate('ReceivedReviewsTab', { screen: 'ReceivedReviews' })}
-              hitSlop={8}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel="Ver todas as avaliações"
             >
               <Text style={styles.seeAll}>Ver todas</Text>
             </Pressable>

@@ -54,7 +54,9 @@ export function RegisterScreen({ navigation }: Props) {
   return (
     <ScreenContainer scroll>
       <View style={styles.header}>
-        <Text style={styles.title}>Criar conta</Text>
+        <Text style={styles.title} accessibilityRole="header">
+          Criar conta
+        </Text>
         <Text style={styles.subtitle}>Leva menos de um minuto.</Text>
       </View>
 
@@ -138,7 +140,13 @@ export function RegisterScreen({ navigation }: Props) {
         style={styles.submitButton}
       />
 
-      <Pressable style={styles.backToLogin} onPress={() => navigation.navigate('Login')}>
+      <Pressable
+        style={styles.backToLogin}
+        hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel="Já tem conta? Entrar"
+        onPress={() => navigation.navigate('Login')}
+      >
         <Text style={styles.backToLoginText}>
           Já tem conta? <Text style={styles.backToLoginLink}>Entrar</Text>
         </Text>
@@ -181,7 +189,8 @@ const styles = StyleSheet.create({
   },
   backToLogin: {
     alignItems: 'center',
-    marginTop: spacing.lg,
+    paddingVertical: spacing.xs,
+    marginTop: spacing.md,
   },
   backToLoginText: {
     color: colors.textMuted,

@@ -22,7 +22,9 @@ export function AboutScreen() {
     <ScreenContainer scroll edges={['left', 'right', 'bottom']}>
       <View style={styles.header}>
         <Icon name="construct" size={56} color={colors.primary} />
-        <Text style={styles.title}>App Serviços Gerais</Text>
+        <Text style={styles.title} accessibilityRole="header">
+          App Serviços Gerais
+        </Text>
         <Text style={styles.version}>Versão {version}</Text>
       </View>
 

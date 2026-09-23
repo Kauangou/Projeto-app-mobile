@@ -15,6 +15,7 @@ import { useProviderById } from '../hooks/useProviders';
 import { useCategoryById } from '../hooks/useCategories';
 import { useAuth } from '../contexts/AuthContext';
 import { useProvidersContext } from '../contexts/ProvidersContext';
+import { useToast } from '../contexts/ToastContext';
 import { ProviderDetailParamList } from '../navigation/types';
 import { ImageRef } from '../types';
 import { isFutureIso, maskDate, parseDateShort, todayShort } from '../utils/date';
@@ -50,6 +51,7 @@ export function ReviewFormScreen({ navigation, route }: Props) {
   const category = useCategoryById(provider?.categoryId);
   const { user } = useAuth();
   const { addReview } = useProvidersContext();
+  const { showToast } = useToast();
   const [photos, setPhotos] = useState<ImageRef[]>([]);
 
   const form = useForm<ReviewForm>({
@@ -78,6 +80,7 @@ export function ReviewFormScreen({ navigation, route }: Props) {
       photos,
     });
     navigation.goBack();
+    showToast('Avaliação publicada');
   });
 
   return (

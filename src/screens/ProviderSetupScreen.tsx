@@ -26,7 +26,9 @@ export function ProviderSetupScreen() {
     <ScreenContainer scroll>
       <View style={styles.header}>
         <Text style={styles.step}>Passo 2 de 2</Text>
-        <Text style={styles.title}>Monte sua vitrine</Text>
+        <Text style={styles.title} accessibilityRole="header">
+          Monte sua vitrine
+        </Text>
         <Text style={styles.subtitle}>
           Olá, {user.name.split(' ')[0]}! Essas informações aparecem para os clientes que buscam
           pelo seu serviço. Você pode alterá-las depois.
@@ -53,7 +55,13 @@ export function ProviderSetupScreen() {
         </View>
       </ProviderProfileForm>
 
-      <Pressable style={styles.signOut} onPress={signOut}>
+      <Pressable
+        style={styles.signOut}
+        hitSlop={12}
+        accessibilityRole="button"
+        accessibilityLabel="Sair e continuar depois"
+        onPress={signOut}
+      >
         <Text style={styles.signOutText}>Sair e continuar depois</Text>
       </Pressable>
     </ScreenContainer>
@@ -98,7 +106,8 @@ const styles = StyleSheet.create({
   },
   signOut: {
     alignItems: 'center',
-    marginTop: spacing.lg,
+    paddingVertical: spacing.xs,
+    marginTop: spacing.md,
   },
   signOutText: {
     color: colors.textMuted,

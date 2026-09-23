@@ -6,7 +6,9 @@ export function SplashScreen() {
   return (
     <View style={styles.container}>
       <Icon name="construct" size={64} color={colors.onPrimary} style={styles.logo} />
-      <Text style={styles.title}>App Serviços Gerais</Text>
+      <Text style={styles.title} accessibilityRole="header">
+        App Serviços Gerais
+      </Text>
       <Text style={styles.subtitle}>Conecte-se a quem faz.</Text>
       <ActivityIndicator color={colors.onPrimary} style={styles.loader} />
     </View>
