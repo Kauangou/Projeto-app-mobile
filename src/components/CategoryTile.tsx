@@ -13,6 +13,7 @@ export function CategoryTile({ icon, label, onPress }: Props) {
       onPress={onPress}
       style={({ pressed }) => [styles.tile, pressed && styles.pressed]}
       accessibilityRole="button"
+      accessibilityLabel={label}
     >
       <View style={styles.iconBadge}>
         <Text style={styles.icon}>{icon}</Text>

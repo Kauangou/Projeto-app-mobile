@@ -1,45 +1,109 @@
 import { StyleSheet, Switch, Text, View } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ScreenContainer } from '../components/ScreenContainer';
 import { Button } from '../components/Button';
+import { Avatar } from '../components/Avatar';
+import { StatCard } from '../components/StatCard';
+import { SettingRow } from '../components/SettingRow';
+import { SectionTitle } from '../components/SectionTitle';
 import { colors, radius, spacing, typography } from '../theme';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
+import { useSettings } from '../contexts/SettingsContext';
+import { useMyProvider, useMyReviewsCount } from '../hooks/useProviders';
+import { ProfileStackParamList } from '../navigation/types';
 
-export function UserProfileScreen() {
+type Props = NativeStackScreenProps<ProfileStackParamList, 'UserProfile'>;
+
+export function UserProfileScreen({ navigation }: Props) {
   const { user, signOut } = useAuth();
   const { favoriteIds } = useFavorites();
+  const { notificationsEnabled, setNotificationsEnabled } = useSettings();
+  const myProvider = useMyProvider();
+  const myReviewsCount = useMyReviewsCount();
+
+  if (!user) return null;
+
+  const isProvider = user.profileType === 'prestador';
 
   return (
     <ScreenContainer scroll>
       <View style={styles.header}>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarInitial}>{user?.name.charAt(0).toUpperCase() ?? '?'}</Text>
-        </View>
-        <Text style={styles.name}>{user?.name ?? 'Usuário'}</Text>
-        <Text style={styles.email}>{user?.email}</Text>
+        <Avatar name={user.name} size={80} />
+        <Text style={styles.name}>{user.name}</Text>
+        <Text style={styles.email}>{user.email}</Text>
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>
-            {user?.profileType === 'prestador' ? 'Prestador de serviço' : 'Cliente'}
-          </Text>
+          <Text style={styles.badgeText}>{isProvider ? 'Prestador de serviço' : 'Cliente'}</Text>
         </View>
       </View>
 
       <View style={styles.statsRow}>
-        <View style={styles.statCard}>
-          <Text style={styles.statValue}>{favoriteIds.length}</Text>
-          <Text style={styles.statLabel}>Favoritos</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statValue}>0</Text>
-          <Text style={styles.statLabel}>Avaliações feitas</Text>
-        </View>
+        {isProvider ? (
+          <>
+            <StatCard value={myProvider?.reviewsCount ? myProvider.rating.toFixed(1) : '–'} label="Nota média" />
+            <StatCard value={myProvider?.reviewsCount ?? 0} label="Avaliações recebidas" />
+          </>
+        ) : (
+          <>
+            <StatCard value={favoriteIds.length} label="Favoritos" />
+            <StatCard value={myReviewsCount} label="Avaliações feitas" />
+          </>
+        )}
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Configurações</Text>
-      </View>
+      {isProvider && myProvider && (
+        <>
+          <SectionTitle title="Minha vitrine" />
+          <SettingRow
+            icon="eye-outline"
+            label="Ver minha vitrine"
+            description="Prévia de como os clientes veem seu perfil"
+            onPress={() =>
+              navigation.navigate('ProviderProfile', { providerId: myProvider.id, preview: true })
+            }
+          />
+          <SettingRow
+            icon="create-outline"
+            label="Editar vitrine"
+            description="Serviço, descrição, região, preço, contato e fotos"
+            onPress={() => navigation.navigate('EditProviderProfile')}
+          />
+        </>
+      )}
 
-      <Button label="Sair da conta" variant="outline" onPress={signOut} style={styles.logout} />
+      <SectionTitle title="Configurações" />
+      <SettingRow
+        icon="person-circle-outline"
+        label="Editar nome"
+        description={user.name}
+        onPress={() => navigation.navigate('EditAccount')}
+      />
+      <SettingRow
+        icon="notifications-outline"
+        label="Notificações"
+        description={notificationsEnabled ? 'Ativadas' : 'Desativadas'}
+        right={
+          <Switch
+            value={notificationsEnabled}
+            onValueChange={setNotificationsEnabled}
+            trackColor={{ true: colors.primary, false: colors.border }}
+            accessibilityLabel="Notificações"
+          />
+        }
+      />
+      <SettingRow
+        icon="information-circle-outline"
+        label="Sobre o app"
+        onPress={() => navigation.navigate('About')}
+      />
+
+      <Button
+        label="Sair da conta"
+        variant="outline"
+        icon="log-out-outline"
+        onPress={signOut}
+        style={styles.logout}
+      />
     </ScreenContainer>
   );
 }
@@ -51,24 +115,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
     gap: spacing.xs,
   },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: radius.full,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: spacing.xs,
-  },
-  avatarInitial: {
-    fontSize: 32,
-    color: '#fff',
-    fontWeight: '700',
-  },
   name: {
-    fontSize: typography.subtitle.fontSize,
+    ...typography.subtitle,
     fontWeight: '700',
     color: colors.text,
+    marginTop: spacing.xs,
   },
   email: {
     fontSize: typography.body.fontSize,
@@ -82,59 +133,15 @@ const styles = StyleSheet.create({
     borderRadius: radius.full,
   },
   badgeText: {
-    color: '#fff',
+    color: colors.onPrimary,
     fontSize: typography.caption.fontSize,
     fontWeight: '600',
   },
   statsRow: {
     flexDirection: 'row',
     gap: spacing.sm,
-    marginBottom: spacing.lg,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: typography.title.fontSize,
-    fontWeight: '700',
-    color: colors.primary,
-  },
-  statLabel: {
-    fontSize: typography.caption.fontSize,
-    color: colors.textMuted,
-    marginTop: spacing.xs,
-  },
-  section: {
-    marginBottom: spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: typography.subtitle.fontSize,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: spacing.sm,
-  },
-  settingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 2,
-  },
-  settingLabel: {
-    fontSize: typography.body.fontSize,
-    color: colors.text,
   },
   logout: {
-    marginBottom: spacing.xl,
+    marginTop: spacing.lg,
   },
 });

@@ -1,6 +1,9 @@
 export const colors = {
   primary: '#2563EB',
   primaryDark: '#1E40AF',
+  primarySoft: '#DBEAFE',
+  onPrimary: '#FFFFFF',
+  onPrimaryMuted: '#E0E7FF',
   secondary: '#F59E0B',
   background: '#F8FAFC',
   surface: '#FFFFFF',
@@ -8,8 +11,11 @@ export const colors = {
   textMuted: '#64748B',
   border: '#E2E8F0',
   success: '#16A34A',
+  successSoft: '#DCFCE7',
+  whatsapp: '#25D366',
   danger: '#DC2626',
   star: '#F59E0B',
+  overlay: 'rgba(15, 23, 42, 0.92)',
 };
 
 export const spacing = {

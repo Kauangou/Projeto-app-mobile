@@ -26,6 +26,14 @@
         "projectId": "ff147750-4a09-4153-aab9-079967ff6cdb"
       }
     },
-    "owner": "kauango"
+    "owner": "kauango",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permita o acesso às suas fotos para anexar imagens ao portfólio e às avaliações."
+        }
+      ]
+    ]
   }
 }

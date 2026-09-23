@@ -1,8 +1,17 @@
 [
   {
-    "name": "usuario_teste",
+    "id": "u-cliente-teste",
+    "name": "Usuário Teste",
     "email": "teste@email.com",
     "password": "Teste@123",
     "profileType": "cliente"
+  },
+  {
+    "id": "u-prestador-teste",
+    "name": "Carlos Silva",
+    "email": "prestador@email.com",
+    "password": "Teste@123",
+    "profileType": "prestador",
+    "providerId": "1"
   }
 ]

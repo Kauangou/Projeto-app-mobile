@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { colors, spacing, typography } from '../theme';
+import { Icon } from '../components/Icon';
 
 export function SplashScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>🛠️</Text>
+      <Icon name="construct" size={64} color={colors.onPrimary} style={styles.logo} />
       <Text style={styles.title}>App Serviços Gerais</Text>
       <Text style={styles.subtitle}>Conecte-se a quem faz.</Text>
+      <ActivityIndicator color={colors.onPrimary} style={styles.loader} />
     </View>
   );
 }
@@ -20,16 +22,17 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   logo: {
-    fontSize: 64,
     marginBottom: spacing.sm,
   },
   title: {
-    fontSize: typography.title.fontSize,
-    fontWeight: '700',
-    color: '#fff',
+    ...typography.title,
+    color: colors.onPrimary,
   },
   subtitle: {
     fontSize: typography.body.fontSize,
-    color: '#E0E7FF',
+    color: colors.onPrimaryMuted,
+  },
+  loader: {
+    marginTop: spacing.lg,
   },
 });

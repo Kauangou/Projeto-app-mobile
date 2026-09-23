@@ -1,12 +1,31 @@
-import providersData from '../data/mockProviders.json';
-import { Provider } from '../types';
-
-const providers = providersData as Provider[];
+import { useProvidersContext } from '../contexts/ProvidersContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export function useProviders() {
-  return providers;
+  return useProvidersContext().providers;
 }
 
-export function useProviderById(providerId: string) {
-  return providers.find((provider) => provider.id === providerId);
+export function useProviderById(providerId: string | undefined) {
+  const { getProvider } = useProvidersContext();
+  return providerId ? getProvider(providerId) : undefined;
+}
+
+/** Vitrine do prestador logado (ou `undefined` para clientes). */
+export function useMyProvider() {
+  const { user } = useAuth();
+  return useProviderById(user?.providerId);
+}
+
+/** Quantidade de avaliações escritas pelo usuário logado. */
+export function useMyReviewsCount() {
+  const { user } = useAuth();
+  const providers = useProviders();
+  if (!user) return 0;
+  const email = user.email.toLowerCase();
+  return providers.reduce(
+    (count, provider) =>
+      count +
+      provider.reviews.filter((review) => review.authorEmail?.toLowerCase() === email).length,
+    0
+  );
 }

@@ -58,11 +58,54 @@ src/
 └── types/                    # tipos e contratos da aplicação
 ```
 
+## Melhorias pós-Etapa 02 — perfis separados, vitrine e persistência local
+
+### Navegação por perfil
+
+A stack raiz (`src/navigation/AppNavigator.tsx`) escolhe a área exibida a partir
+do estado da sessão, sem `reset` manual nas telas:
+
+| Estado da sessão              | Área exibida                                      |
+| ----------------------------- | ------------------------------------------------- |
+| Sem usuário                   | Login / Cadastro                                  |
+| Prestador sem vitrine         | `ProviderSetup` (passo 2 do cadastro)             |
+| Prestador com vitrine         | `ProviderTabs`: Painel, Avaliações, Perfil        |
+| Cliente                       | `ClientTabs`: Início, Busca, Favoritos, Perfil    |
+
+As stacks internas (`src/navigation/stacks.tsx`) usam um único navigator
+tipado; as telas de detalhe (`ProviderProfile`, `ReviewDetail`, `ReviewForm`)
+são registradas uma vez e reaproveitadas em todas as abas.
+
+### Estado e persistência
+
+- `src/storage/storage.ts`: leitura/escrita JSON no **AsyncStorage** (prefixo
+  `@asg/`).
+- `AuthContext`: contas cadastradas + sessão; `register`, `signIn`, `signOut`,
+  `updateUser`.
+- `ProvidersContext`: prestadores do mock + vitrines criadas/alteradas e
+  avaliações novas (salvas como sobrescritas por id). Nota média e total de
+  avaliações são **calculados** a partir das avaliações (`src/utils/rating.ts`).
+- `FavoritesContext` e `SettingsContext`: favoritos e preferência de
+  notificações, salvos por usuário.
+- Lógica de busca isolada em funções puras (`src/utils/search.ts`), com
+  comparação sem acentos (`src/utils/text.ts`).
+
+### Novas dependências
+
+- `@expo/vector-icons` (Ionicons), `@react-native-async-storage/async-storage`,
+  `expo-image-picker` e `expo-constants`.
+
+### Limitações
+
+- O contato por WhatsApp/ligação é ilustrativo (exibe o número em um aviso).
+- As fotos escolhidas são guardadas como URI local do aparelho; o envio para o
+  Supabase Storage fica para a etapa de backend.
+
 ### Próximos passos (etapas futuras)
 
 - Configurar projeto, tabelas e políticas RLS no Supabase;
 - Implementar cadastro/login real e persistência de sessão;
-- Persistir favoritos localmente (AsyncStorage) e depois no backend;
+- Migrar a persistência local (AsyncStorage) para o backend;
 - Integrar persistência remota e upload de imagens (Supabase Storage);
 - Introduzir TanStack Query para cache de dados remotos;
 - Implementar testes automatizados (`tests/`).

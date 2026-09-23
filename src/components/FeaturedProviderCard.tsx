@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme';
 import { Provider } from '../types';
-import { useCategoryById } from '../hooks/useCategories';
+import { useProviderSubtitle } from '../hooks/useCategories';
 import { RatingStars } from './RatingStars';
 import { Avatar } from './Avatar';
-import { useFavorites } from '../contexts/FavoritesContext';
+import { FavoriteButton } from './FavoriteButton';
 
 interface Props {
   provider: Provider;
@@ -12,29 +12,26 @@ interface Props {
 }
 
 export function FeaturedProviderCard({ provider, onPress }: Props) {
-  const category = useCategoryById(provider.categoryId);
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const favorite = isFavorite(provider.id);
+  const subtitle = useProviderSubtitle(provider);
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
+      // Sem accessibilityRole="button": o card contém o botão de favoritar, e no web isso
+      // geraria um <button> dentro de outro.
+      accessibilityLabel={`${provider.name}, ${subtitle}`}
+    >
       <View style={styles.header}>
         <Avatar name={provider.name} size={48} />
-        <Pressable
-          hitSlop={10}
-          onPress={() => toggleFavorite(provider.id)}
-          accessibilityRole="button"
-          accessibilityLabel={favorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-        >
-          <Text style={styles.favoriteIcon}>{favorite ? '♥' : '♡'}</Text>
-        </Pressable>
+        <FavoriteButton providerId={provider.id} size={22} />
       </View>
 
       <Text style={styles.name} numberOfLines={1}>
         {provider.name}
       </Text>
       <Text style={styles.category} numberOfLines={1}>
-        {category ? `${category.icon} ${category.name}` : ''} · {provider.city}/{provider.state}
+        {subtitle}
       </Text>
 
       <RatingStars rating={provider.rating} reviewsCount={provider.reviewsCount} />
@@ -65,10 +62,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  favoriteIcon: {
-    fontSize: 22,
-    color: colors.danger,
   },
   name: {
     fontSize: typography.body.fontSize,

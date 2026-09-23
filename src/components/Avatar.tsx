@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   initials: {
-    color: "#fff",
+    color: colors.onPrimary,
     fontWeight: "700",
   },
 });

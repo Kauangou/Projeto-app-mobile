@@ -1,4 +1,14 @@
-import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { useAuth } from './AuthContext';
+import { getJSON, setJSON, storageKeys } from '../storage/storage';
 
 interface FavoritesContextValue {
   favoriteIds: string[];
@@ -9,20 +19,42 @@ interface FavoritesContextValue {
 const FavoritesContext = createContext<FavoritesContextValue | undefined>(undefined);
 
 export function FavoritesProvider({ children }: PropsWithChildren) {
+  const { user } = useAuth();
+  const email = user?.email;
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
 
+  useEffect(() => {
+    setFavoriteIds([]);
+    if (!email) return;
+    let active = true;
+    getJSON<string[]>(storageKeys.favorites(email), []).then((stored) => {
+      if (active) setFavoriteIds(stored);
+    });
+    return () => {
+      active = false;
+    };
+  }, [email]);
+
+  const favoriteSet = useMemo(() => new Set(favoriteIds), [favoriteIds]);
+
+  const isFavorite = useCallback((providerId: string) => favoriteSet.has(providerId), [favoriteSet]);
+
+  const toggleFavorite = useCallback(
+    (providerId: string) => {
+      setFavoriteIds((current) => {
+        const next = current.includes(providerId)
+          ? current.filter((id) => id !== providerId)
+          : [...current, providerId];
+        if (email) setJSON(storageKeys.favorites(email), next);
+        return next;
+      });
+    },
+    [email],
+  );
+
   const value = useMemo<FavoritesContextValue>(
-    () => ({
-      favoriteIds,
-      isFavorite: (providerId) => favoriteIds.includes(providerId),
-      toggleFavorite: (providerId) =>
-        setFavoriteIds((current) =>
-          current.includes(providerId)
-            ? current.filter((id) => id !== providerId)
-            : [...current, providerId],
-        ),
-    }),
-    [favoriteIds],
+    () => ({ favoriteIds, isFavorite, toggleFavorite }),
+    [favoriteIds, isFavorite, toggleFavorite],
   );
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;

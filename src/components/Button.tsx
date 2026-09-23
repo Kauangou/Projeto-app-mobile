@@ -1,36 +1,56 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme';
+import { Icon, IconName } from './Icon';
+
+type Variant = 'primary' | 'secondary' | 'outline' | 'success' | 'ghost';
 
 interface Props {
   label: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: Variant;
+  icon?: IconName;
   loading?: boolean;
   disabled?: boolean;
   style?: ViewStyle;
 }
 
-export function Button({ label, onPress, variant = 'primary', loading, disabled, style }: Props) {
-  const isOutline = variant === 'outline';
+const FILLED: Variant[] = ['primary', 'secondary', 'success'];
+
+export function Button({
+  label,
+  onPress,
+  variant = 'primary',
+  icon,
+  loading,
+  disabled,
+  style,
+}: Props) {
+  const filled = FILLED.includes(variant);
+  const contentColor = filled ? colors.onPrimary : colors.primary;
+  const inactive = disabled || loading;
 
   return (
     <Pressable
       onPress={onPress}
-      disabled={disabled || loading}
+      disabled={inactive}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !!inactive, busy: !!loading }}
       style={({ pressed }) => [
         styles.base,
-        variant === 'primary' && styles.primary,
-        variant === 'secondary' && styles.secondary,
-        isOutline && styles.outline,
-        (disabled || loading) && styles.disabled,
-        pressed && !disabled && styles.pressed,
+        styles[variant],
+        inactive && styles.disabled,
+        pressed && !inactive && styles.pressed,
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={isOutline ? colors.primary : '#fff'} />
+        <ActivityIndicator color={contentColor} />
       ) : (
-        <Text style={[styles.label, isOutline && styles.labelOutline]}>{label}</Text>
+        <View style={styles.content}>
+          {icon && <Icon name={icon} size={20} color={contentColor} />}
+          <Text style={[styles.label, { color: contentColor }]}>{label}</Text>
+        </View>
       )}
     </Pressable>
   );
@@ -44,16 +64,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
   },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   primary: {
     backgroundColor: colors.primary,
   },
   secondary: {
     backgroundColor: colors.secondary,
   },
+  success: {
+    backgroundColor: colors.whatsapp,
+  },
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 1.5,
     borderColor: colors.primary,
+  },
+  ghost: {
+    backgroundColor: 'transparent',
   },
   disabled: {
     opacity: 0.5,
@@ -62,11 +93,7 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   label: {
-    color: '#fff',
     fontSize: typography.body.fontSize,
     fontWeight: '600',
-  },
-  labelOutline: {
-    color: colors.primary,
   },
 });

@@ -2,8 +2,8 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme';
 
 interface Props {
-  icon: string;
   label: string;
+  icon?: string;
   selected?: boolean;
   onPress: () => void;
 }
@@ -14,9 +14,10 @@ export function CategoryChip({ icon, label, selected, onPress }: Props) {
       onPress={onPress}
       style={[styles.chip, selected && styles.chipSelected]}
       accessibilityRole="button"
+      accessibilityLabel={label}
       accessibilityState={{ selected: !!selected }}
     >
-      <Text style={styles.icon}>{icon}</Text>
+      {!!icon && <Text style={styles.icon}>{icon}</Text>}
       <Text style={[styles.label, selected && styles.labelSelected]}>{label}</Text>
     </Pressable>
   );
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   labelSelected: {
-    color: '#fff',
+    color: colors.onPrimary,
   },
 });

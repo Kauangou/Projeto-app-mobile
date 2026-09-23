@@ -1,16 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, spacing, typography } from '../theme';
+import { Icon, IconName } from './Icon';
 
 interface Props {
-  icon?: string;
+  icon?: IconName;
   title: string;
   description?: string;
 }
 
-export function EmptyState({ icon = '🔍', title, description }: Props) {
+export function EmptyState({ icon = 'search-outline', title, description }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.icon}>{icon}</Text>
+      <Icon name={icon} size={40} color={colors.textMuted} style={styles.icon} />
       <Text style={styles.title}>{title}</Text>
       {!!description && <Text style={styles.description}>{description}</Text>}
     </View>
@@ -25,12 +26,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   icon: {
-    fontSize: 40,
     marginBottom: spacing.sm,
   },
   title: {
-    fontSize: typography.subtitle.fontSize,
-    fontWeight: '600',
+    ...typography.subtitle,
     color: colors.text,
     textAlign: 'center',
   },

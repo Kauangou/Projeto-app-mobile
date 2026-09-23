@@ -83,12 +83,31 @@ desenvolvimento, desde que as decisões sejam justificadas e documentadas.
 Detalhes completos desta etapa (telas, componentes, entradas de dados, adaptação
 de layout e decisões de interface) em [`docs/etapa-02.md`](docs/etapa-02.md).
 
+### Implementadas (melhorias pós-Etapa 02)
+
+- [x] Experiências separadas para **Cliente** (Início, Busca, Favoritos, Perfil)
+      e **Prestador** (Painel, Avaliações, Perfil)
+- [x] Cadastro do prestador em 2 passos: no primeiro login ele monta a
+      **vitrine** (serviço, descrição, cidade/UF, preço, WhatsApp e fotos)
+- [x] "Minha vitrine" (prévia de como o cliente vê o perfil) e edição da
+      vitrine com **portfólio de fotos** (galeria do aparelho via
+      `expo-image-picker`)
+- [x] Busca com filtros de **nome/serviço, localização, tipo de serviço e nota
+      mínima**, executada pelo botão "Buscar", com **ordenação** (melhor
+      avaliados, mais avaliações, A–Z) e "Limpar filtros"
+- [x] Avaliações com **data, serviço prestado e fotos**, tela de detalhe da
+      avaliação e formulário **"Avaliar prestador"** (nota média recalculada)
+- [x] Contato por **WhatsApp e ligação** (ilustrativos nesta versão)
+- [x] Configurações: editar nome, notificações e "Sobre o app"
+- [x] Persistência local (AsyncStorage): sessão, contas, favoritos, vitrines,
+      avaliações e preferências
+- [x] Ícones Ionicons (`@expo/vector-icons`) nas abas e na interface
+
 ### Planejadas
 
 - [ ] Cadastro/login real com Supabase Auth
-- [ ] Persistência local (AsyncStorage / SecureStore) e remota (Supabase)
-- [ ] Comunicação com API (Supabase)
-- [ ] Recursos nativos do dispositivo (galeria/Image Picker, localização)
+- [ ] Persistência remota (Supabase) e upload das fotos (Supabase Storage)
+- [ ] Localização do cliente (`expo-location`) para ordenar por proximidade
 
 > A lista será atualizada conforme as etapas do projeto forem concluídas.
 
@@ -157,17 +176,19 @@ projeto). Escaneie o QR code normalmente; se ele não aparecer no terminal,
 copie a URL `exp://...` exibida e cole em **"Enter URL manually"** na tela
 inicial do Expo Go.
 
-### Login de teste
+### Contas de teste
 
-A tela de login valida contra um usuário fictício fixo (sem backend), definido
-em [`src/data/mockUsers.json`](src/data/mockUsers.json):
+As contas ficam salvas localmente no aparelho (sem backend). Contas de exemplo,
+definidas em [`src/data/mockUsers.json`](src/data/mockUsers.json):
 
-- **E-mail:** `teste@email.com`
-- **Senha:** `Teste@123`
+| Perfil    | E-mail                | Senha       |
+| --------- | --------------------- | ----------- |
+| Cliente   | `teste@email.com`     | `Teste@123` |
+| Prestador | `prestador@email.com` | `Teste@123` |
 
-Alternativamente, é possível tocar em **"Criar conta"** e preencher
-nome/e-mail/senha — o cadastro aceita qualquer combinação válida quanto ao
-formato dos campos, sem checagem contra credenciais existentes.
+Também é possível tocar em **"Criar conta"**: após o cadastro, o app volta ao
+login com o e-mail preenchido. Para contas de **Prestador**, o primeiro login
+abre a tela "Monte sua vitrine".
 
 ### Acesso pela web (EAS Hosting)
 
