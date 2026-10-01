@@ -38,7 +38,7 @@ técnicas): [`docs/proposta.md`](docs/proposta.md)
 - **Armazenamento local:** AsyncStorage (preferências e cache) + Expo
   SecureStore (dados sensíveis de pequeno porte)
 
-### Backend e dados
+### Backend e dados (Previsto)
 
 - **Plataforma:** Supabase
 - **Banco de dados:** PostgreSQL

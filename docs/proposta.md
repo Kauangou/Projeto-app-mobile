@@ -6,14 +6,11 @@
 
 **App Serviços Gerais** — _\"Conecte-se a quem faz."_
 
-(Nome provisório: poderá ser ajustado ao longo do semestre, conforme item 4 das
-regras do projeto da disciplina.)
-
 ## 2. Problema que a aplicação pretende resolver
 
-Profissionais autônomos de serviços gerais — pintores, pedreiros, encanadores,
+Profissionais autônomos de serviços gerais (pintores, pedreiros, encanadores,
 eletricistas, jardineiros, montadores de móveis, técnicos de ar-condicionado,
-diaristas/empregadas domésticas, costureiras, entre outros — geralmente têm
+diaristas/empregadas domésticas, costureiras, entre outros) geralmente têm
 **pouca visibilidade digital**. Eles dependem quase exclusivamente de indicação
 boca a boca, o que limita seu alcance a novos clientes e dificulta a divulgação
 do seu trabalho.
