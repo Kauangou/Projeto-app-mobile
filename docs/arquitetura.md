@@ -87,6 +87,9 @@ são registradas uma vez e reaproveitadas em todas as abas.
   avaliações são **calculados** a partir das avaliações (`src/utils/rating.ts`).
 - `FavoritesContext` e `SettingsContext`: favoritos e preferência de
   notificações, salvos por usuário.
+- Etapa 04: ciclo completo de dados (incluindo excluir avaliação e excluir
+  conta); mecanismo, estrutura das chaves e justificativa em
+  [`etapa-04.md`](etapa-04.md).
 - Lógica de busca isolada em funções puras (`src/utils/search.ts`), com
   comparação sem acentos (`src/utils/text.ts`).
 

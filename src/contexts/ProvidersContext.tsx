@@ -21,6 +21,9 @@ interface ProvidersContextValue {
   addPortfolioPhoto: (providerId: string, photo: ImageRef) => void;
   removePortfolioPhoto: (providerId: string, photo: ImageRef) => void;
   addReview: (providerId: string, review: Omit<Review, 'id'>) => void;
+  removeReview: (providerId: string, reviewId: string) => void;
+  /** Remove a vitrine criada pelo usuário; as dos dados de exemplo não podem ser removidas. */
+  removeProvider: (providerId: string) => void;
 }
 
 const ProvidersContext = createContext<ProvidersContextValue | undefined>(undefined);
@@ -113,6 +116,24 @@ export function ProvidersProvider({ children }: PropsWithChildren) {
     [saveRecord],
   );
 
+  const removeReview = useCallback(
+    (providerId: string, reviewId: string) =>
+      saveRecord(providerId, (current) => ({
+        ...current,
+        reviews: current.reviews.filter((review) => review.id !== reviewId),
+      })),
+    [saveRecord],
+  );
+
+  const removeProvider = useCallback((providerId: string) => {
+    if (seedProviders.some((seed) => seed.id === providerId)) return;
+    setOverrides((current) => {
+      const { [providerId]: _removed, ...rest } = current;
+      setJSON(storageKeys.providers, rest);
+      return rest;
+    });
+  }, []);
+
   const value = useMemo<ProvidersContextValue>(
     () => ({
       hydrated,
@@ -123,6 +144,8 @@ export function ProvidersProvider({ children }: PropsWithChildren) {
       addPortfolioPhoto,
       removePortfolioPhoto,
       addReview,
+      removeReview,
+      removeProvider,
     }),
     [
       hydrated,
@@ -133,6 +156,8 @@ export function ProvidersProvider({ children }: PropsWithChildren) {
       addPortfolioPhoto,
       removePortfolioPhoto,
       addReview,
+      removeReview,
+      removeProvider,
     ],
   );
 

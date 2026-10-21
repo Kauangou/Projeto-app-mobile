@@ -6,18 +6,23 @@ import { RatingStars } from '../components/RatingStars';
 import { EmptyState } from '../components/EmptyState';
 import { PhotoViewerModal } from '../components/PhotoViewerModal';
 import { SectionTitle } from '../components/SectionTitle';
+import { Button } from '../components/Button';
 import { Icon, IconName } from '../components/Icon';
 import { colors, radius, spacing, typography } from '../theme';
 import { useProviderById } from '../hooks/useProviders';
 import { useProviderSubtitle } from '../hooks/useCategories';
+import { useAuth } from '../contexts/AuthContext';
+import { useProvidersContext } from '../contexts/ProvidersContext';
+import { useToast } from '../contexts/ToastContext';
 import { ProviderDetailParamList } from '../navigation/types';
 import { Provider, Review } from '../types';
 import { formatDateLong } from '../utils/date';
 import { resolveImage } from '../utils/images';
+import { confirmAction } from '../utils/feedback';
 
 type Props = NativeStackScreenProps<ProviderDetailParamList, 'ReviewDetail'>;
 
-export function ReviewDetailScreen({ route }: Props) {
+export function ReviewDetailScreen({ route, navigation }: Props) {
   const provider = useProviderById(route.params.providerId);
   const review = provider?.reviews.find((item) => item.id === route.params.reviewId);
 
@@ -25,7 +30,7 @@ export function ReviewDetailScreen({ route }: Props) {
     return <EmptyState icon="alert-circle-outline" title="Avaliação não encontrada" />;
   }
 
-  return <ReviewDetail provider={provider} review={review} />;
+  return <ReviewDetail provider={provider} review={review} onDeleted={navigation.goBack} />;
 }
 
 function InfoRow({ icon, label, value }: { icon: IconName; label: string; value: string }) {
@@ -42,9 +47,33 @@ function InfoRow({ icon, label, value }: { icon: IconName; label: string; value:
   );
 }
 
-function ReviewDetail({ provider, review }: { provider: Provider; review: Review }) {
+interface ReviewDetailProps {
+  provider: Provider;
+  review: Review;
+  onDeleted: () => void;
+}
+
+function ReviewDetail({ provider, review, onDeleted }: ReviewDetailProps) {
   const subtitle = useProviderSubtitle(provider);
+  const { user } = useAuth();
+  const { removeReview } = useProvidersContext();
+  const { showToast } = useToast();
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
+  const isAuthor =
+    !!user && !!review.authorEmail && review.authorEmail.toLowerCase() === user.email.toLowerCase();
+
+  const handleDelete = () =>
+    confirmAction(
+      'Excluir avaliação',
+      'Essa avaliação será apagada e a nota média do prestador será recalculada.',
+      'Excluir',
+      () => {
+        onDeleted();
+        removeReview(provider.id, review.id);
+        showToast('Avaliação excluída');
+      },
+    );
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
@@ -82,6 +111,16 @@ function ReviewDetail({ provider, review }: { provider: Provider; review: Review
             </Pressable>
           ))}
         </View>
+      )}
+
+      {isAuthor && (
+        <Button
+          label="Excluir minha avaliação"
+          variant="danger"
+          icon="trash-outline"
+          onPress={handleDelete}
+          style={styles.delete}
+        />
       )}
 
       <PhotoViewerModal photos={review.photos} index={viewerIndex} onClose={() => setViewerIndex(null)} />
@@ -153,6 +192,9 @@ const styles = StyleSheet.create({
   },
   muted: {
     color: colors.textMuted,
+  },
+  delete: {
+    marginTop: spacing.lg,
   },
   grid: {
     flexDirection: 'row',

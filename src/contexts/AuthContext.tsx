@@ -28,6 +28,8 @@ interface AuthContextValue {
   signIn: (email: string, password: string) => Promise<Result>;
   signOut: () => void;
   updateUser: (changes: Partial<Pick<AuthUser, 'name' | 'providerId'>>) => void;
+  /** Apaga a conta logada e os dados locais dela (sessão, favoritos e preferências). */
+  deleteAccount: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -124,9 +126,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
     [user, accounts, saveSession, saveAccounts],
   );
 
+  const deleteAccount = useCallback(() => {
+    if (!user) return;
+    saveAccounts(accounts.filter((account) => !sameEmail(account.email, user.email)));
+    removeKey(storageKeys.favorites(user.email));
+    removeKey(storageKeys.settings(user.email));
+    saveSession(null);
+  }, [user, accounts, saveAccounts, saveSession]);
+
   const value = useMemo<AuthContextValue>(
-    () => ({ hydrated, user, register, signIn, signOut, updateUser }),
-    [hydrated, user, register, signIn, signOut, updateUser],
+    () => ({ hydrated, user, register, signIn, signOut, updateUser, deleteAccount }),
+    [hydrated, user, register, signIn, signOut, updateUser, deleteAccount],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

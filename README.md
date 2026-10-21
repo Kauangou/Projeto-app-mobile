@@ -35,8 +35,9 @@ técnicas): [`docs/proposta.md`](docs/proposta.md)
 - **Navegação:** React Navigation (Bottom Tabs + Stack Navigator)
 - **Formulários e validação:** React Hook Form + Zod
 - **Estado:** Context API (sessão) + TanStack Query (dados remotos e cache)
-- **Armazenamento local:** AsyncStorage (preferências e cache) + Expo
-  SecureStore (dados sensíveis de pequeno porte)
+- **Armazenamento local:** AsyncStorage (sessão, contas, favoritos, vitrines,
+  avaliações e preferências), encapsulado em `src/storage/storage.ts`. Expo
+  SecureStore (dados sensíveis) fica previsto para a autenticação real
 
 ### Backend e dados (Previsto)
 
@@ -121,6 +122,23 @@ Detalhes completos desta etapa (estrutura de navegação, telas e mecanismos de
 acesso, feedback visual, decisões de UX e medidas de acessibilidade) em
 [`docs/etapa-03.md`](docs/etapa-03.md).
 
+### Implementadas (Etapa 04 — persistência local de dados)
+
+- [x] Mecanismo documentado e justificado: **AsyncStorage**, acessado por um
+      único módulo (`src/storage/storage.ts`) com chaves prefixadas `@asg/` e
+      tolerante a falhas de leitura/escrita
+- [x] Ciclo completo dos dados: **criar, armazenar, recuperar ao reabrir,
+      atualizar, remover e apresentar** (contas, sessão, vitrines, avaliações,
+      favoritos, fotos do portfólio e preferências)
+- [x] Novo: **excluir avaliação própria** (nota média recalculada) e
+      **excluir conta** (apaga conta, sessão, favoritos, preferências e a
+      vitrine criada), ambos com confirmação
+- [x] Procedimento de verificação (encerrar e reabrir o app) e resultado
+      documentados
+
+Estrutura dos dados, operações, telas e roteiro de teste em
+[`docs/etapa-04.md`](docs/etapa-04.md).
+
 ### Planejadas
 
 - [ ] Cadastro/login real com Supabase Auth
@@ -131,9 +149,9 @@ acesso, feedback visual, decisões de UX e medidas de acessibilidade) em
 
 ## 🏗️ Arquitetura
 
-Nesta etapa foi implementada a camada visual e estrutural da aplicação
-(navegação, telas e componentes), ainda sem persistência de dados ou comunicação
-com servidor. A arquitetura detalhada (stack, decisões e próximos passos) é
+A aplicação tem a camada visual e estrutural (navegação, telas e componentes) e,
+desde a Etapa 04, persistência local dos dados do usuário no aparelho
+(AsyncStorage), ainda sem comunicação com servidor. A arquitetura detalhada (stack, decisões e próximos passos) é
 documentada e evoluída em [`docs/arquitetura.md`](docs/arquitetura.md).
 
 ## 🚀 Execução
@@ -166,10 +184,12 @@ npx expo start
 Em seguida, escaneie o QR code exibido no terminal com o app Expo Go
 (Android/iOS).
 
-> Nesta etapa (Etapa 02) a aplicação possui a interface navegável completa
-> (protótipo visual), mas ainda sem persistência de dados nem comunicação com
-> servidor (os dados exibidos são mockados localmente). Instruções detalhadas de
-> execução e navegação em [`docs/etapa-02.md`](docs/etapa-02.md).
+> Os dados criados no app (contas, avaliações, favoritos, vitrines) ficam salvos
+> no aparelho e permanecem após fechar e reabrir o app; não há comunicação com
+> servidor (os prestadores de exemplo vêm de `src/data/`). Para **testar a
+> persistência**, siga o roteiro de [`docs/etapa-04.md`](docs/etapa-04.md#7-procedimento-de-verificação-da-persistência-encerrar-e-reabrir).
+> Instruções de navegação em [`docs/etapa-02.md`](docs/etapa-02.md) e
+> [`docs/etapa-03.md`](docs/etapa-03.md).
 
 ### Executando em redes institucionais (ex.: Wi-Fi da PUC-GO)
 
@@ -253,15 +273,18 @@ app-servicos-gerais/
 │   ├── proposta.md
 │   ├── arquitetura.md
 │   ├── evidencias.md
-│   └── etapa-02.md
+│   ├── etapa-02.md
+│   ├── etapa-03.md
+│   └── etapa-04.md
 │
 ├── src/
 │   ├── navigation/           # Stack raiz, Bottom Tabs e Stacks por aba
 │   ├── screens/               # uma tela por arquivo
 │   ├── components/            # componentes reutilizáveis
 │   ├── data/                  # dados mockados desta etapa (JSON)
-│   ├── contexts/               # AuthContext e FavoritesContext
-│   ├── hooks/                  # hooks de acesso aos dados mockados
+│   ├── contexts/               # Auth, Providers, Favorites, Settings e Toast
+│   ├── hooks/                  # hooks de acesso aos dados
+│   ├── storage/                # acesso ao AsyncStorage (persistência local)
 │   ├── theme/                  # cores, espaçamentos e tipografia
 │   └── types/                  # tipos e contratos da aplicação
 │
@@ -306,6 +329,8 @@ desenvolvimento, no diretório `docs/`:
   interface (Etapa 02)
 - [`docs/etapa-03.md`](docs/etapa-03.md) — navegação, UX e acessibilidade
   (Etapa 03)
+- [`docs/etapa-04.md`](docs/etapa-04.md) — persistência local de dados
+  (Etapa 04)
 
 ## ⚠️ Limitações Conhecidas
 
@@ -313,7 +338,14 @@ desenvolvimento, no diretório `docs/`:
   exibidos são mockados localmente em (`src/data/`);
 - Login/cadastro validam apenas localmente (contas e sessão salvas no
   AsyncStorage do aparelho, sem validação em servidor nem sincronização entre
-  dispositivos);
+  dispositivos); o AsyncStorage **não é criptografado**, então as senhas locais
+  servem só à simulação desta etapa;
+- A persistência foi verificada na versão web (reload da página); o roteiro de
+  encerrar e reabrir o app no celular está em
+  [`docs/etapa-04.md`](docs/etapa-04.md#7-procedimento-de-verificação-da-persistência-encerrar-e-reabrir)
+  e deve ser repetido num aparelho;
+- Excluir conta não apaga as avaliações que o usuário escreveu em outros
+  prestadores nem remove contas/vitrines dos dados de exemplo;
 - Contato por WhatsApp/ligação é ilustrativo (exibe o número, não abre o
   app de fato);
 - Testes automatizados ainda não implementados;

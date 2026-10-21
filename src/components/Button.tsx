@@ -2,7 +2,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View, ViewStyle } from 
 import { colors, radius, spacing, typography } from '../theme';
 import { Icon, IconName } from './Icon';
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'success' | 'ghost';
+type Variant = 'primary' | 'secondary' | 'outline' | 'success' | 'ghost' | 'danger';
 
 interface Props {
   label: string;
@@ -26,7 +26,7 @@ export function Button({
   style,
 }: Props) {
   const filled = FILLED.includes(variant);
-  const contentColor = filled ? colors.onPrimary : colors.primary;
+  const contentColor = filled ? colors.onPrimary : variant === 'danger' ? colors.danger : colors.primary;
   const inactive = disabled || loading;
 
   return (
@@ -85,6 +85,11 @@ const styles = StyleSheet.create({
   },
   ghost: {
     backgroundColor: 'transparent',
+  },
+  danger: {
+    backgroundColor: 'transparent',
+    borderWidth: 1.5,
+    borderColor: colors.danger,
   },
   disabled: {
     opacity: 0.5,

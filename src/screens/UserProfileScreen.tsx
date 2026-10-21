@@ -10,13 +10,16 @@ import { colors, radius, spacing, typography } from '../theme';
 import { useAuth } from '../contexts/AuthContext';
 import { useFavorites } from '../contexts/FavoritesContext';
 import { useSettings } from '../contexts/SettingsContext';
+import { useProvidersContext } from '../contexts/ProvidersContext';
+import { confirmAction } from '../utils/feedback';
 import { useMyProvider, useMyReviewsCount } from '../hooks/useProviders';
 import { ProfileStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'UserProfile'>;
 
 export function UserProfileScreen({ navigation }: Props) {
-  const { user, signOut } = useAuth();
+  const { user, signOut, deleteAccount } = useAuth();
+  const { removeProvider } = useProvidersContext();
   const { favoriteIds } = useFavorites();
   const { notificationsEnabled, setNotificationsEnabled } = useSettings();
   const myProvider = useMyProvider();
@@ -25,6 +28,19 @@ export function UserProfileScreen({ navigation }: Props) {
   if (!user) return null;
 
   const isProvider = user.profileType === 'prestador';
+
+  const handleDeleteAccount = () =>
+    confirmAction(
+      'Excluir conta',
+      isProvider
+        ? 'Sua conta, sua vitrine, seus favoritos e suas preferências serão apagados deste aparelho.'
+        : 'Sua conta, seus favoritos e suas preferências serão apagados deste aparelho.',
+      'Excluir',
+      () => {
+        if (user.providerId) removeProvider(user.providerId);
+        deleteAccount();
+      },
+    );
 
   return (
     <ScreenContainer scroll>
@@ -104,6 +120,13 @@ export function UserProfileScreen({ navigation }: Props) {
         onPress={signOut}
         style={styles.logout}
       />
+      <Button
+        label="Excluir conta"
+        variant="danger"
+        icon="trash-outline"
+        onPress={handleDeleteAccount}
+        style={styles.deleteAccount}
+      />
     </ScreenContainer>
   );
 }
@@ -143,5 +166,8 @@ const styles = StyleSheet.create({
   },
   logout: {
     marginTop: spacing.lg,
+  },
+  deleteAccount: {
+    marginTop: spacing.sm,
   },
 });
