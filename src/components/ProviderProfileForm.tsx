@@ -10,6 +10,8 @@ import { formatPhone } from '../utils/text';
 import { TextField } from './TextField';
 import { ChipGroup } from './ChipGroup';
 import { Button } from './Button';
+import { CepLookupField } from './CepLookupField';
+import { CepAddress } from '../services/viacep';
 
 const providerProfileSchema = z.object({
   name: z.string().trim().min(2, 'Informe o nome que aparecerá na vitrine'),
@@ -24,7 +26,10 @@ const providerProfileSchema = z.object({
     .string()
     .trim()
     .regex(/^[A-Za-z]{2}$/, 'Use a sigla do estado (ex.: GO)'),
-  priceReference: z.string().trim().min(3, 'Informe um valor de referência (ex.: A partir de R$ 50)'),
+  priceReference: z
+    .string()
+    .trim()
+    .min(3, 'Informe um valor de referência (ex.: A partir de R$ 50)'),
   phone: z
     .string()
     .refine((value) => [10, 11].includes(value.replace(/\D/g, '').length), 'Informe DDD + número'),
@@ -61,6 +66,13 @@ export function ProviderProfileForm({ defaultValues, submitLabel, onSubmit, chil
     },
   });
   const { errors } = form.formState;
+
+  /** Preenche cidade e UF com o endereço devolvido pela API ViaCEP (o usuário pode corrigir). */
+  const fillFromCep = (address: CepAddress) => {
+    const options = { shouldValidate: true, shouldDirty: true };
+    form.setValue('city', address.city, options);
+    form.setValue('state', address.state, options);
+  };
 
   const handleSubmit = form.handleSubmit((values) => {
     onSubmit({
@@ -127,6 +139,8 @@ export function ProviderProfileForm({ defaultValues, submitLabel, onSubmit, chil
           />
         )}
       />
+
+      <CepLookupField onFound={fillFromCep} />
 
       <View style={styles.row}>
         <View style={styles.cityField}>
@@ -200,7 +214,9 @@ export function ProviderProfileForm({ defaultValues, submitLabel, onSubmit, chil
             keyboardType="phone-pad"
             textContentType="telephoneNumber"
             value={field.value}
-            onChangeText={(text) => field.onChange(formatPhone(text.replace(/\D/g, '').slice(0, 11)))}
+            onChangeText={(text) =>
+              field.onChange(formatPhone(text.replace(/\D/g, '').slice(0, 11)))
+            }
             onBlur={field.onBlur}
             error={errors.phone?.message}
           />

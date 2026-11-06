@@ -14,6 +14,8 @@ export const colors = {
   border: '#E2E8F0',
   success: '#16A34A',
   successSoft: '#DCFCE7',
+  // Green-800: texto de sucesso legível sobre fundo claro (7.1:1). O `success` (#16A34A) tem só 3.3:1.
+  successText: '#166534',
   // Verde do WhatsApp escurecido: o tom oficial (#25D366) some com texto branco em cima
   // (1.98:1). Este tom mantém a identidade "verde WhatsApp" e passa em 5.43:1 (AA).
   whatsapp: '#0E7A3D',

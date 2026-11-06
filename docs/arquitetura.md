@@ -166,3 +166,44 @@ passada manual com VoiceOver/TalkBack ligado: o projeto é Expo gerenciado
 (`expo run:ios`/`run:android`) só para essa validação ficou fora do escopo
 desta etapa. Ver a limitação registrada em
 [`docs/etapa-03.md`](etapa-03.md#6-medidas-de-acessibilidade-implementadas).
+
+## Etapa 06 — Integração com serviço externo (ViaCEP)
+
+Primeira comunicação de rede do app: consulta de endereço por CEP na API pública
+ViaCEP, usada para preencher cidade e UF no cadastro/edição da vitrine. Detalhamento
+(endpoint, formato dos dados, estados, testes) em
+[`docs/etapa-06.md`](etapa-06.md); aqui ficam as decisões técnicas.
+
+### Estrutura em camadas
+
+```text
+CepLookupField (tela) → useCepLookup (estado) → services/viacep.ts (HTTP) → ViaCEP
+                                                        ↑
+                                                 config/api.ts (URL, timeout)
+```
+
+- **`services/viacep.ts` só fala HTTP.** Devolve um `CepAddress` ou lança
+  `CepLookupError` com uma causa tipada (`invalid`, `not_found`, `network`,
+  `timeout`, `server`). Não conhece React, então é testável isoladamente (foi
+  exercitado com `fetch` simulado, incluindo timeout real).
+- **`hooks/useCepLookup.ts` traduz causas em estados de tela** (`idle`, `loading`,
+  `success`, `empty`, `error`) e mensagens, e garante que só a última consulta vale
+  (`AbortController`).
+- **"CEP inexistente" é estado vazio, não erro.** O ViaCEP responde 200 com
+  `{"erro": true}`; tratar como falha geraria um botão "Tentar de novo" inútil.
+- **`fetch` nativo em vez de Axios**: uma única chamada `GET` não justifica uma
+  dependência nova; timeout e cancelamento vêm de `AbortController`.
+- **Integração opcional**: o formulário continua válido sem CEP, então uma queda do
+  ViaCEP não impede o cadastro.
+- **Configuração por `EXPO_PUBLIC_VIACEP_URL`**: permite apontar a API para outro
+  endereço (teste de falha, mock) sem alterar código. Por ser embutida no app, essa
+  categoria de variável não pode conter segredos — ver `.env.example`.
+- **Novo token de tema `successText`** (`#166534`): o `success` (`#16A34A`) tem só 3,3:1
+  sobre branco e reprovaria no critério AA adotado na Etapa 03 se usado como texto.
+
+### Próximos passos
+
+O Supabase (Auth, Postgres e Storage) será o próximo serviço externo e deve seguir o
+mesmo desenho: URL/chave pública em `config/`, cliente em `services/`, estados de
+carregamento/erro/vazio expostos por hooks. As políticas RLS, e não o app, protegem os
+dados.

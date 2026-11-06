@@ -17,11 +17,13 @@ app-serviços-gerais/
 ├── docs/                    # Documentação por etapa
 └── src/                     # Todo o código do aplicativo
     ├── components/
+    ├── config/
     ├── contexts/
     ├── data/
     ├── hooks/
     ├── navigation/
     ├── screens/
+    ├── services/
     ├── storage/
     ├── theme/
     ├── types/
@@ -37,6 +39,7 @@ app-serviços-gerais/
 | `app.json` | Nome, versão, ícones, orientação e permissão de acesso às fotos. |
 | `package.json` | Lista de bibliotecas e scripts (`npm start`, `npm run android`...). |
 | `tsconfig.json` | Regras do TypeScript. |
+| `.env.example` | Modelo das variáveis opcionais (URL da API de CEP). O `.env` real é ignorado pelo Git. |
 | `assets/` | Ícone do app, ícones adaptativos do Android, favicon e imagem de splash. |
 
 ## 📚 `docs/`: documentação
@@ -47,6 +50,8 @@ app-serviços-gerais/
 | `arquitetura.md` | Decisões técnicas e evolução da arquitetura. |
 | `etapa-02.md` | Protótipo de interface: telas e componentes. |
 | `etapa-03.md` | Navegação, UX e acessibilidade. |
+| `etapa-04.md` | Persistência local de dados. |
+| `etapa-06.md` | Integração com a API ViaCEP: endpoints, dados, estados e testes. |
 | `evidencias.md` | Evidências de funcionamento de cada etapa. |
 | `screenshots/` | Prints das telas (Splash, Login, Home, Busca, Favoritos, Perfil). |
 
@@ -77,6 +82,7 @@ Componentes pequenos usados em várias telas, agrupados por finalidade:
 
 - **Base e formulário:** `Button`, `TextField`, `SegmentedControl`, `ChipGroup`, `ScreenContainer`, `SectionTitle`
 - **Prestadores:** `ProviderCard`, `FeaturedProviderCard`, `ProviderProfileForm`, `Avatar`, `FavoriteButton`
+- **Serviço externo:** `CepLookupField` (campo de CEP com os estados de carregamento, sucesso, erro e ausência de dados)
 - **Categorias:** `CategoryChip`, `CategoryTile`
 - **Avaliações:** `RatingStars`, `StarRatingInput`, `ReviewCard`
 - **Fotos:** `PhotoGallery`, `PhotoViewerModal`
@@ -96,6 +102,13 @@ Guardam informações compartilhadas entre telas, cada uma com seu *Provider* e 
 ### `hooks/` (lógica reutilizável)
 - `useProviders`: busca prestadores, o perfil do próprio prestador e o contador de avaliações.
 - `useCategories`: busca categorias e o subtítulo do prestador.
+- `useCepLookup`: controla a consulta de CEP (estados `idle`, `loading`, `success`, `empty` e `error`, cancelamento e mensagens).
+
+### `config/` (configuração de serviços externos)
+`api.ts` define a URL base da API de CEP (lida de `EXPO_PUBLIC_VIACEP_URL`, com valor padrão) e o tempo limite das requisições. Não guarda segredos.
+
+### `services/` (comunicação com serviços externos)
+`viacep.ts` é o cliente HTTP da API **ViaCEP**: monta a requisição `GET /{cep}/json/`, aplica timeout, valida a resposta e a converte para o formato do app. Não depende de React nem de telas.
 
 ### `data/` (dados simulados)
 Arquivos JSON que fazem o papel de "banco de dados" nesta fase:
@@ -132,12 +145,15 @@ index.ts → App.tsx → Providers (contexts) → AppNavigator
                                   hooks / utils / theme / types
                                                 │
                                       storage + data (JSON)
+                                                │
+                                  hooks → services → API externa (ViaCEP)
 ```
 
 1. O app inicia em `index.ts` e carrega o `App.tsx`.
 2. O `App.tsx` disponibiliza o estado global (contexts) para todas as telas.
 3. O `AppNavigator` decide qual área mostrar e as telas montam a interface com os componentes.
 4. Os dados vêm dos JSONs em `data/` e são persistidos no aparelho por `storage/`.
+5. A consulta de CEP passa por `CepLookupField` → `useCepLookup` → `services/viacep.ts` → API ViaCEP.
 
 ## 🚫 Ignorado pelo Git (`.gitignore`)
 
